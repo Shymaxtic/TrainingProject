@@ -16,11 +16,20 @@
 // along with TrainingProject.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "base_manager.h"
+#include <chrono>
+#include <ctime>
+#include <iostream>
 
 void BaseManager::execute() {
     m_task_scheduler.run();
 }
 
 void BaseManager::init_task_scheduler() {
+    int result = m_task_scheduler.register_task([] (int){
+        auto current_time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
 
+        std::cout  << std::ctime(&current_time) << "\n";
+
+    });
+    
 }

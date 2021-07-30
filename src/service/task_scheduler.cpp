@@ -23,8 +23,13 @@ void TaskScheduler::run() {
 }
 
 void TaskScheduler::do_task() {
+    uint8_t i = 0;
+
     while (true) {
-        fprintf(stderr, "runing\n");
+        if (m_task_1s[i % 10]) {
+            m_task_1s[i % 10](0);
+        }
+        i++;
         usleep(100000);
     }
 }

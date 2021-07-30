@@ -20,7 +20,9 @@
 class BaseManager {
 
     public:
-        BaseManager() {}
+        BaseManager() {
+            init_task_scheduler();
+        }
         virtual ~BaseManager() {}
 
         void execute();
