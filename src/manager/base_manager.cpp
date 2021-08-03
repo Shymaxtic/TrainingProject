@@ -22,6 +22,7 @@
 
 void BaseManager::execute() {
     m_task_scheduler.run();
+    m_msg_receiver.listen_msg();
 }
 
 void BaseManager::init_task_scheduler() {
@@ -31,5 +32,10 @@ void BaseManager::init_task_scheduler() {
         std::cout  << std::ctime(&current_time) << "\n";
 
     });
+    
+}
+
+
+void BaseManager::init_msg_receiver() {
     
 }

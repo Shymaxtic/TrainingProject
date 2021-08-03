@@ -14,28 +14,20 @@
 // 
 // You should have received a copy of the GNU General Public License
 // along with TrainingProject.  If not, see <http://www.gnu.org/licenses/>.
-
+#include "message_sender.h"
+#include <unistd.h>
 #include "message_service.h"
-#include <mutex>
-#include <condition_variable>
 
-int MessageService::send_msg(uint8_t msg_id, const message_t& msg) {
-    std::unique_lock<std::mutex> lck(MSG_POOL[msg_id].my_locker);
-    MSG_POOL[msg_id].msg_queue.push_front(msg);
-    MSG_POOL[msg_id].my_cv.notify_all();
-    return 0;
+MessageSender::MessageSender()
+{
+
 }
 
-std::vector<message_t> MessageService::wait_msgs(uint8_t msg_id) {
-    std::vector<message_t> msgs;
-    std::unique_lock<std::mutex> lck(MSG_POOL[msg_id].my_locker);
-    while (MSG_POOL[msg_id].msg_queue.empty()) {
-        MSG_POOL[msg_id].my_cv.wait(lck);
-    }
+MessageSender::~MessageSender()
+{
+}
 
-    while (MSG_POOL[msg_id].msg_queue.empty() == false) {
-        msgs.push_back(MSG_POOL[msg_id].msg_queue.back());
-        MSG_POOL[msg_id].msg_queue.pop_back();
-    }      
-    return msgs;
+int MessageSender::send_message(const message_t& msg, const int& msg_id) {
+    MessageService::send_msg(msg_id, msg);
+    return 0;
 }

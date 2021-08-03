@@ -14,30 +14,25 @@
 // 
 // You should have received a copy of the GNU General Public License
 // along with TrainingProject.  If not, see <http://www.gnu.org/licenses/>.
-#ifndef BASE_MANAGER_H
-#define BASE_MANAGER_H
-#include "service/task_scheduler.h"
-#include "service/message_receiver.h"
-#include "service/message_sender.h"
+#ifndef MESSAGE_RECEIVER_H
+#define MESSAGE_RECEIVER_H
+#include <functional>
+#include <thread>
 
-class BaseManager {
+typedef std::function<void(void*)>        cb_receiver_t;
 
-    public:
-        BaseManager(int msg_queue_id) : m_msg_receiver(msg_queue_id) {
-            init_task_scheduler();
-            init_msg_receiver();
-        }
-        virtual ~BaseManager() {}
-
-        void execute();
-
-        virtual void init_task_scheduler();
-        virtual void init_msg_receiver();
-
-    protected:
-        TaskScheduler m_task_scheduler;
-        MessageReceiver m_msg_receiver;
-        MessageSender m_msg_sender;
+class MessageReceiver
+{
+public:
+    MessageReceiver(const int& msg_queue_id);
+    ~MessageReceiver();
+    int register_callback(cb_receiver_t);
+    int listen_msg();
+    
+private:
+    int m_msg_queue_id;
+    cb_receiver_t m_callback;
+    std::thread my_thread;
 };
 
 #endif

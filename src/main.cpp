@@ -16,11 +16,24 @@
 // along with TrainingProject.  If not, see <http://www.gnu.org/licenses/>.
 #include "manager/base_manager.h"
 #include <iostream>
+#include "service/message_service.h"
+#include <unistd.h>
 
 int main() {
-    BaseManager base_manager;
+    BaseManager base_manager(0);
     base_manager.execute();
 
+    BaseManager base_manager2(1);
+    base_manager2.execute();
+    int i = 100;
+    while (i--)
+    {
+        message_t dummy;
+        // printf("sending message %d\n", i);
+        MessageService::send_msg(i%2, dummy);
+        usleep(1000000);
+    }
+    
     getchar();
     
     return 0;

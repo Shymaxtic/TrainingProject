@@ -14,7 +14,8 @@
 // 
 // You should have received a copy of the GNU General Public License
 // along with TrainingProject.  If not, see <http://www.gnu.org/licenses/>.
-
+#ifndef TASK_SCHEDULEER_H
+#define TASK_SCHEDULEER_H
 #include <functional>
 #include <thread>
 
@@ -37,3 +38,5 @@ class TaskScheduler {
             task_t m_task_1s[10];
             std::thread my_thread;
 };
+
+#endif
